@@ -14,10 +14,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -47,7 +45,10 @@ fun InstagramProfileCard() {
                 id = R.drawable.ic_instagram),
                 contentDescription = "Instagram's icon",
                 modifier = Modifier
-                    .size(50.dp)
+                    .size(60.dp)
+                    .clip(CircleShape)
+                    .background(Color.White)
+                    .padding(8.dp)
             )
             UsersStatistics(title = "Posts", value = "6.950")
             UsersStatistics(title = "Followers", value = "436M")
