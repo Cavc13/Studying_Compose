@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Button
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
@@ -34,25 +35,50 @@ fun InstagramProfileCard() {
         border = BorderStroke(1.dp, MaterialTheme.colors.onBackground),
         modifier = Modifier.padding(8.dp)
     ){
-        Row(
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
+                .padding(16.dp)
         ) {
-            Image(painter = painterResource(
-                id = R.drawable.ic_instagram),
-                contentDescription = "Instagram's icon",
+            Row(
                 modifier = Modifier
-                    .size(60.dp)
-                    .clip(CircleShape)
-                    .background(Color.White)
-                    .padding(8.dp)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(painter = painterResource(
+                    id = R.drawable.ic_instagram),
+                    contentDescription = "Instagram's icon",
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(CircleShape)
+                        .background(Color.White)
+                        .padding(4.dp)
+                )
+                UsersStatistics(title = "Posts", value = "6.950")
+                UsersStatistics(title = "Followers", value = "436M")
+                UsersStatistics(title = "Following", value = "76")
+            }
+            Text(
+                text = "Instagram",
+                fontFamily = FontFamily.Cursive,
+                fontWeight = FontWeight.Bold,
+                fontSize = 32.sp
             )
-            UsersStatistics(title = "Posts", value = "6.950")
-            UsersStatistics(title = "Followers", value = "436M")
-            UsersStatistics(title = "Following", value = "76")
+            Text(
+                text = "#YoursToMake",
+                fontFamily = FontFamily.Default,
+                fontWeight = FontWeight.Bold,
+                fontSize = 14.sp
+            )
+            Text(
+                text = "www.facebook.com/emotional_health",
+                fontSize = 14.sp
+            )
+            Button(
+                onClick = {},
+            ) {
+                Text(text = "Follow")
+            }
         }
     }
 }
