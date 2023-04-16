@@ -8,6 +8,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,6 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.snusnu.composestuding.ui.InstagramProfileCard
 import com.snusnu.composestuding.ui.theme.ComposeStudingTheme
 import com.snusnu.composestuding.ui.theme.PostCard
@@ -42,65 +45,59 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 private fun Test() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Example3()
-    }
-}
-
-@Composable
-private fun Example1() {
-    OutlinedButton(onClick = { /*TODO*/ }) {
-        Text(
-            text = "So, Hi!",
-            fontWeight = FontWeight.Bold
-        )
-    }
-}
-
-@Composable
-private fun Example2() {
-    TextField(
-        value = "Value",
-        onValueChange = { "Value"},
-        label = { Text(text = "Label")}
-    )
-}
-
-@Composable
-private fun Example3() {
-    AlertDialog(
-        onDismissRequest = {},
-        title = {
-            Text(text = "Are you sure?")
+    Scaffold(
+        bottomBar = {
+            BottomNavigationSample()
         },
-        text = {
-            Text(
-                "Do you want to delete this file?"
+        drawerContent = {
+            ModalDrawerSample()
+        }
+    ) {
+        Text(text = "Text content")
+    }
+}
+
+@Composable
+private fun BottomNavigationSample() {
+    val items = listOf("News", "Weather", "Post")
+
+    BottomNavigation {
+        items.forEachIndexed { index, item ->
+            BottomNavigationItem(
+                selected = true,
+                onClick = { },
+                icon = { Icon(Icons.Filled.Favorite, contentDescription = null) },
+                label = { Text(item) },
+                alwaysShowLabel = false
+            )
+        }
+    }
+}
+
+@Composable
+private fun ModalDrawerSample() {
+    ModalDrawer(
+        drawerContent = {
+            Button(
+                onClick = {},
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = 16.dp),
+                content = { Text(text = "Close Drawer") }
             )
         },
-        confirmButton = {
-            TextButton(
-                onClick = {
-                }
+        content = {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    "Yes",
-                    color = Color.Black
-                )
-            }
-        },
-        dismissButton = {
-            TextButton(
-                onClick = {
+                Text(text = ">>> Swipe >>>")
+                Spacer(modifier = Modifier.height(20.dp))
+                Button(onClick = {}) {
+                    Text(text = "Click to open")
                 }
-            ) {
-                Text(
-                    "No",
-                    color = Color.Black
-                )
             }
         }
     )
