@@ -3,45 +3,80 @@ package com.snusnu.composestuding
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
+import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.MaterialTheme
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
-import com.snusnu.composestuding.ui.InstagramProfileCard
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.snusnu.composestuding.ui.instagram_screen.InstagramProfileCard
+import com.snusnu.composestuding.ui.instagram_screen.InstagramViewModel
 import com.snusnu.composestuding.ui.theme.ComposeStudingTheme
 
 class MainActivity : ComponentActivity() {
+
+    private val instagramViewModel by viewModels<InstagramViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ComposeStudingTheme {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colors.background)
-                ) {
-                    InstagramProfileCard()
-                }
-
-            }
+            TestText(instagramViewModel = instagramViewModel)
         }
     }
 }
 
-@Preview
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun TestText(){
-    Image(
-        painter = painterResource(id = R.drawable.ic_launcher_foreground),
-        contentDescription = "",
-        modifier = Modifier.clip(CircleShape),
-        contentScale = ContentScale.FillHeight
-    )
+fun TestText(instagramViewModel: InstagramViewModel) {
+    ComposeStudingTheme {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colors.background)
+        ) {
+            val instagramModels = instagramViewModel.instagramModels.observeAsState(emptyList())
+            LazyColumn {
+                items(instagramModels.value, key = {it.id}) { instagramModel ->
+                    val dismissState = rememberDismissState()
+                    if (dismissState.isDismissed(DismissDirection.EndToStart)) {
+                        instagramViewModel.delete(instagramModel)
+                    }
+                    SwipeToDismiss(
+                        state = dismissState,
+                        directions = setOf(DismissDirection.EndToStart),
+                        background = {
+                            Box(
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .background(Color.Red.copy(alpha = 0.5f))
+                                    .fillMaxSize(),
+                                contentAlignment = Alignment.CenterEnd
+                            ) {
+                                Text(
+                                    modifier = Modifier.padding(16.dp),
+                                    text = "Delete item",
+                                    color = Color.White,
+                                    fontSize = 30.sp
+                                )
+                            }
+                        }
+                    ) {
+                        InstagramProfileCard(
+                            instagramModel = instagramModel,
+                            onFollowButtonClickListener = instagramViewModel::changeFollowingStatus
+                        )
+                    }
+
+                }
+            }
+        }
+
+    }
 }
